@@ -1,0 +1,439 @@
+import { EVE_ICON } from '../lib/eve';
+import { getItemName } from './localization';
+import type {
+  ComponentDef,
+  ComponentMaterial,
+  Material,
+  MaterialCategory,
+} from '../types';
+
+export const MATERIAL_DEFS: Record<
+  number,
+  {
+    category: MaterialCategory;
+    schematicId?: number;
+    formulaTypeId?: number;
+  }
+> = {
+  34: { category: 'mineral' },
+  35: { category: 'mineral' },
+  36: { category: 'mineral' },
+  37: { category: 'mineral' },
+  38: { category: 'mineral' },
+  39: { category: 'mineral' },
+  40: { category: 'mineral' },
+  11399: { category: 'mineral' },
+  2872: { category: 'pi', schematicId: 115 },
+  57457: { category: 'reaction', formulaTypeId: 57493 },
+};
+
+export const COMPONENT_DEFS: ComponentDef[] = [
+  // Standard capital components
+  {
+    typeId: 21009,
+    blueprintTypeId: 21010,
+    category: 'standard',
+    productionTime: 15600,
+    materials: {
+      34: 40500,
+      35: 146250,
+      36: 40500,
+      37: 11250,
+      38: 1125,
+      39: 570,
+      40: 285,
+      2872: 1,
+      57457: 100,
+    },
+  },
+  {
+    typeId: 21011,
+    blueprintTypeId: 21012,
+    category: 'standard',
+    productionTime: 15600,
+    materials: {
+      34: 27750,
+      35: 101250,
+      36: 28500,
+      37: 7500,
+      38: 750,
+      39: 390,
+      40: 188,
+      2872: 1,
+      57457: 100,
+    },
+  },
+  {
+    typeId: 21013,
+    blueprintTypeId: 21014,
+    category: 'standard',
+    productionTime: 15600,
+    materials: {
+      34: 40500,
+      35: 146250,
+      36: 40500,
+      37: 11250,
+      38: 1125,
+      39: 570,
+      40: 285,
+      2872: 1,
+      57457: 100,
+    },
+  },
+  {
+    typeId: 21017,
+    blueprintTypeId: 21018,
+    category: 'standard',
+    productionTime: 15600,
+    materials: {
+      34: 45000,
+      35: 157500,
+      36: 45000,
+      37: 12000,
+      38: 1200,
+      39: 615,
+      40: 308,
+      2872: 1,
+      57457: 100,
+    },
+  },
+  {
+    typeId: 21019,
+    blueprintTypeId: 21020,
+    category: 'standard',
+    productionTime: 15600,
+    materials: {
+      34: 39000,
+      35: 142500,
+      36: 39000,
+      37: 11250,
+      38: 1125,
+      39: 548,
+      40: 278,
+      2872: 1,
+      57457: 100,
+    },
+  },
+  {
+    typeId: 21021,
+    blueprintTypeId: 21022,
+    category: 'standard',
+    productionTime: 15600,
+    materials: {
+      34: 45000,
+      35: 157500,
+      36: 45000,
+      37: 12000,
+      38: 1200,
+      39: 615,
+      40: 308,
+      2872: 1,
+      57457: 100,
+    },
+  },
+  {
+    typeId: 21023,
+    blueprintTypeId: 21024,
+    category: 'standard',
+    productionTime: 15600,
+    materials: {
+      34: 40500,
+      35: 146250,
+      36: 40500,
+      37: 11250,
+      38: 1125,
+      39: 570,
+      40: 285,
+      2872: 1,
+      57457: 100,
+    },
+  },
+  {
+    typeId: 21025,
+    blueprintTypeId: 21026,
+    category: 'standard',
+    productionTime: 15600,
+    materials: {
+      34: 60000,
+      35: 216000,
+      36: 60000,
+      37: 16875,
+      38: 1688,
+      39: 900,
+      40: 420,
+      2872: 1,
+      57457: 100,
+    },
+  },
+  {
+    typeId: 21035,
+    blueprintTypeId: 21036,
+    category: 'standard',
+    productionTime: 15600,
+    materials: {
+      34: 30000,
+      35: 105000,
+      36: 30000,
+      37: 9000,
+      38: 750,
+      39: 413,
+      40: 210,
+      2872: 1,
+      57457: 100,
+    },
+  },
+  {
+    typeId: 21037,
+    blueprintTypeId: 21038,
+    category: 'standard',
+    productionTime: 15600,
+    materials: {
+      34: 30000,
+      35: 105000,
+      36: 30000,
+      37: 9000,
+      38: 750,
+      39: 413,
+      40: 210,
+      2872: 1,
+      57457: 100,
+    },
+  },
+
+  // Advanced capital components
+  {
+    typeId: 24545,
+    blueprintTypeId: 24546,
+    category: 'advanced',
+    productionTime: 28800,
+    materials: {
+      34: 60000,
+      35: 216000,
+      36: 60000,
+      37: 16875,
+      38: 1688,
+      39: 900,
+      40: 420,
+      2872: 2,
+      57457: 150,
+    },
+  },
+  {
+    typeId: 24547,
+    blueprintTypeId: 24548,
+    category: 'advanced',
+    productionTime: 28800,
+    materials: {
+      34: 50000,
+      35: 180000,
+      36: 50000,
+      37: 14000,
+      38: 1400,
+      39: 750,
+      40: 350,
+      2872: 2,
+      57457: 150,
+    },
+  },
+  {
+    typeId: 24556,
+    blueprintTypeId: 24557,
+    category: 'advanced',
+    productionTime: 28800,
+    materials: {
+      34: 60000,
+      35: 216000,
+      36: 60000,
+      37: 16875,
+      38: 1688,
+      39: 900,
+      40: 420,
+      2872: 2,
+      57457: 150,
+    },
+  },
+  {
+    typeId: 24558,
+    blueprintTypeId: 24559,
+    category: 'advanced',
+    productionTime: 28800,
+    materials: {
+      34: 35000,
+      35: 120000,
+      36: 35000,
+      37: 10000,
+      38: 850,
+      39: 450,
+      40: 230,
+      2872: 2,
+      57457: 150,
+    },
+  },
+  {
+    typeId: 24560,
+    blueprintTypeId: 24561,
+    category: 'advanced',
+    productionTime: 28800,
+    materials: {
+      34: 35000,
+      35: 120000,
+      36: 35000,
+      37: 10000,
+      38: 850,
+      39: 450,
+      40: 230,
+      2872: 2,
+      57457: 150,
+    },
+  },
+
+  // Titan-specific components
+  {
+    typeId: 57470,
+    blueprintTypeId: 57507,
+    category: 'special',
+    productionTime: 43200,
+    materials: {
+      34: 15000,
+      35: 50000,
+      36: 15000,
+      37: 4500,
+      38: 375,
+      39: 200,
+      40: 100,
+      11399: 50,
+      2872: 3,
+      57457: 200,
+    },
+  },
+  {
+    typeId: 57471,
+    blueprintTypeId: 57511,
+    category: 'special',
+    productionTime: 43200,
+    materials: {
+      34: 20000,
+      35: 70000,
+      36: 20000,
+      37: 6000,
+      38: 500,
+      39: 270,
+      40: 135,
+      11399: 67,
+      2872: 3,
+      57457: 200,
+    },
+  },
+  {
+    typeId: 57472,
+    blueprintTypeId: 57515,
+    category: 'special',
+    productionTime: 14400,
+    materials: {
+      34: 5000,
+      35: 18000,
+      36: 5000,
+      37: 1500,
+      38: 125,
+      39: 67,
+      40: 34,
+      2872: 1,
+      57457: 50,
+    },
+  },
+  {
+    typeId: 57473,
+    blueprintTypeId: 57519,
+    category: 'special',
+    productionTime: 21600,
+    materials: {
+      34: 8000,
+      35: 28000,
+      36: 8000,
+      37: 2400,
+      38: 200,
+      39: 107,
+      40: 54,
+      2872: 1,
+      57457: 75,
+    },
+  },
+  {
+    typeId: 57474,
+    blueprintTypeId: 57523,
+    category: 'special',
+    productionTime: 172800,
+    materials: {
+      34: 100000,
+      35: 360000,
+      36: 100000,
+      37: 28000,
+      38: 2800,
+      39: 1500,
+      40: 750,
+      11399: 375,
+      2872: 5,
+      57457: 500,
+    },
+  },
+  {
+    typeId: 57475,
+    blueprintTypeId: 57527,
+    category: 'special',
+    productionTime: 604800,
+    materials: {
+      34: 500000,
+      35: 1800000,
+      36: 500000,
+      37: 140000,
+      38: 14000,
+      39: 7500,
+      40: 3750,
+      11399: 1875,
+      2872: 10,
+      57457: 1000,
+    },
+  },
+];
+
+export const COMPONENT_MAP = new Map(
+  COMPONENT_DEFS.map((component) => [component.typeId, component])
+);
+
+export function getComponentDef(typeId: number): ComponentDef | undefined {
+  return COMPONENT_MAP.get(typeId);
+}
+
+export function buildMaterials(materials: Record<number, number>): Material[] {
+  return Object.entries(materials).map(([typeIdString, quantity]) => {
+    const typeId = Number(typeIdString);
+    const def = MATERIAL_DEFS[typeId];
+
+    return {
+      typeId,
+      name: getItemName(typeId, 'en'),
+      nameRu: getItemName(typeId, 'ru'),
+      quantity,
+      icon: EVE_ICON(typeId),
+      category: def?.category ?? 'mineral',
+      schematicId: def?.schematicId,
+      formulaTypeId: def?.formulaTypeId,
+    };
+  });
+}
+
+export function toComponentMaterial(
+  def: ComponentDef,
+  quantity: number
+): ComponentMaterial {
+  return {
+    typeId: def.typeId,
+    blueprintTypeId: def.blueprintTypeId,
+    name: getItemName(def.typeId, 'en'),
+    quantity,
+    icon: EVE_ICON(def.typeId),
+    baseTime: def.productionTime,
+    materials: def.materials,
+    category: def.category,
+  };
+}

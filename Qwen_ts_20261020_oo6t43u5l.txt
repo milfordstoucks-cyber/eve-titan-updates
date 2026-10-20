@@ -1,0 +1,22 @@
+export const PROJECT_NAME = 'eve-titan-calculator';
+
+export const PROJECT_FILES = [
+  'index.html',
+  'package.json',
+  'README.md',
+  'vite.config.ts',
+  'tailwind.config.js',
+  'postcss.config.js',
+  'tsconfig.json',
+  'src/main.tsx',
+  'src/App.tsx',
+  'src/index.css',
+  'src/vite-env.d.ts',
+  'src/components/ProductionTreeView.tsx',
+  'src/data/eveData.ts',
+  'src/data/localization.ts',
+  'src/data/titans.ts',
+  'src/data/productionTree.ts',
+  'src/utils/downloadSources.ts',
+  'src/utils/sources.ts',
+];

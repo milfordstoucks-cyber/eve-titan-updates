@@ -1,0 +1,45 @@
+import type { Language } from '../types';
+
+const STORAGE_KEY = 'eve-titan-calc:v2';
+
+export interface PersistedState {
+  lang: Language;
+  selectedTitan: string;
+  skills: Record<number, number>;
+  blueprintME: number;
+  blueprintTE: number;
+  slots: number;
+  progress: Record<string, boolean>;
+  activeTab: string;
+}
+
+export function loadState(): Partial<PersistedState> | null {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw) as Partial<PersistedState>;
+
+    if (!parsed || typeof parsed !== 'object') return null;
+
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+export function saveState(state: PersistedState): void {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Ignore quota / privacy mode errors.
+  }
+}
+
+export function clearState(): void {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // Ignore.
+  }
+}

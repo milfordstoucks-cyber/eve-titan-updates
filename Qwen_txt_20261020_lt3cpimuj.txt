@@ -1,0 +1,22 @@
+src/
+├── main.tsx
+├── App.tsx
+├── index.css
+├── types.ts
+├── components/
+│   └── ProductionTreeView.tsx
+├── data/
+│   ├── eveData.ts
+│   ├── localization.ts
+│   ├── titans.ts
+│   ├── productionTree.ts
+│   ├── components.ts
+│   └── skills.ts
+├── lib/
+│   ├── eve.ts
+│   ├── format.ts
+│   ├── calculations.ts
+│   └── storage.ts
+└── utils/
+    ├── downloadSources.ts
+    └── sources.ts

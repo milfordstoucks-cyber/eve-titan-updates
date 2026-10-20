@@ -1,0 +1,33 @@
+import { EVE_ICON } from '../lib/eve';
+import { getItemName, SKILL_DESCRIPTIONS } from './localization';
+import type { Skill } from '../types';
+
+interface SkillDef {
+  typeId: number;
+  maxLevel: number;
+  requiredLevel: number;
+  timeBonusPerLevel: number;
+}
+
+const SKILL_DEFS: SkillDef[] = [
+  { typeId: 3386, maxLevel: 5, requiredLevel: 1, timeBonusPerLevel: 4 },
+  { typeId: 3388, maxLevel: 5, requiredLevel: 0, timeBonusPerLevel: 5 },
+  { typeId: 20533, maxLevel: 5, requiredLevel: 5, timeBonusPerLevel: 0 },
+  { typeId: 3387, maxLevel: 5, requiredLevel: 0, timeBonusPerLevel: 2 },
+  { typeId: 3394, maxLevel: 5, requiredLevel: 0, timeBonusPerLevel: 0 },
+  { typeId: 3402, maxLevel: 5, requiredLevel: 1, timeBonusPerLevel: 0 },
+  { typeId: 3403, maxLevel: 5, requiredLevel: 0, timeBonusPerLevel: 0 },
+  { typeId: 3409, maxLevel: 5, requiredLevel: 0, timeBonusPerLevel: 0 },
+];
+
+export const SKILLS: Skill[] = SKILL_DEFS.map((def) => ({
+  typeId: def.typeId,
+  name: getItemName(def.typeId, 'en'),
+  icon: EVE_ICON(def.typeId),
+  maxLevel: def.maxLevel,
+  requiredLevel: def.requiredLevel,
+  timeBonusPerLevel: def.timeBonusPerLevel,
+  description: SKILL_DESCRIPTIONS.en[def.typeId] ?? '',
+}));
+
+export const SKILL_MAP = new Map(SKILLS.map((skill) => [skill.typeId, skill]));

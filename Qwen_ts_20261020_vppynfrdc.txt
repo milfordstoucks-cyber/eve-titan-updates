@@ -1,0 +1,91 @@
+export type Language = 'en' | 'ru';
+
+export type ComponentCategory = 'standard' | 'advanced' | 'special';
+
+export type MaterialCategory =
+  | 'mineral'
+  | 'pi'
+  | 'reaction'
+  | 'gas'
+  | 'moon'
+  | 'component';
+
+export interface Mineral {
+  typeId: number;
+  name: string;
+  icon: string;
+}
+
+export interface Skill {
+  typeId: number;
+  name: string;
+  icon: string;
+  maxLevel: number;
+  requiredLevel: number;
+  timeBonusPerLevel: number;
+  description: string;
+}
+
+export interface ComponentMaterial {
+  typeId: number;
+  blueprintTypeId: number;
+  name: string;
+  quantity: number;
+  icon: string;
+  baseTime: number;
+  materials?: Record<number, number>;
+  category: ComponentCategory;
+}
+
+export interface Material {
+  typeId: number;
+  name: string;
+  nameRu: string;
+  quantity: number;
+  icon: string;
+  category: MaterialCategory;
+  blueprintTypeId?: number;
+  formulaTypeId?: number;
+  schematicId?: number;
+}
+
+export interface ProductionNode {
+  typeId: number;
+  name: string;
+  nameRu: string;
+  icon: string;
+  quantity: number;
+  category: 'titan' | 'component' | MaterialCategory;
+  blueprintTypeId?: number;
+  productionTime?: number;
+  materials: Material[];
+  children?: ProductionNode[];
+}
+
+export interface TitanData {
+  typeId: number;
+  blueprintTypeId: number;
+  name: string;
+  race: 'Amarr' | 'Caldari' | 'Gallente' | 'Minmatar';
+  raceRu: string;
+  icon: string;
+  render: string;
+  baseTime: number;
+  description: string;
+  descriptionRu: string;
+  bonuses: string[];
+  bonusesRu: string[];
+  components: {
+    standard: Record<number, number>;
+    advanced: Record<number, number>;
+    special: Record<number, number>;
+  };
+}
+
+export interface ComponentDef {
+  typeId: number;
+  blueprintTypeId: number;
+  category: ComponentCategory;
+  productionTime: number;
+  materials: Record<number, number>;
+}

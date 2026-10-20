@@ -1,0 +1,348 @@
+import type { Language } from '../types';
+
+export type { Language };
+
+export const UI = {
+  en: {
+    title: 'Titan Construction Calculator',
+    subtitle: 'EVE Online',
+    selectTitan: 'Select Titan',
+    shipInfo: {
+      race: 'Amarr Empire',
+      class: 'Titan',
+      baseBuildTime: 'Base Build Time',
+      laserDamageBonus: 'Laser Damage Bonus',
+      judgementDoomsday: 'Judgement Doomsday',
+      ewImmune: 'EW Immune',
+    },
+    skills: {
+      title: 'Skills',
+      subtitle: 'Affect production time',
+    },
+    blueprint: {
+      title: 'Blueprint',
+      materialEfficiency: 'Material Efficiency (ME)',
+      timeEfficiency: 'Time Efficiency (TE)',
+      materialMultiplier: 'Material multiplier',
+      timeMultiplier: 'Time multiplier',
+      avatarBuildTime: 'Titan build time',
+      summary: 'Summary',
+    },
+    tabs: {
+      components: 'Components',
+      minerals: 'Total Minerals',
+      time: 'Time Estimates',
+    },
+    components: {
+      standard: 'Standard Capital Components',
+      advanced: 'Advanced Capital Components',
+      special: 'Titan-Specific Components',
+      materialsPerUnit: 'Materials per unit (ME adjusted)',
+      timePerUnit: 'Time per component type (all units)',
+    },
+    minerals: {
+      title: 'Total Mineral Requirements',
+      subtitle: 'Based on ME {me} • All {count} components',
+      warning:
+        'These are base amounts. Actual requirements depend on blueprint ME, rig bonuses, and implant bonuses.',
+    },
+    time: {
+      avatarFinalAssembly: 'Titan Final Assembly',
+      baseTime: 'Base',
+      componentProductionTimes: 'Component Production Times',
+      totalProductionTime: 'Total Production Time (sequential)',
+      withParallelLines: 'With parallel lines (est.)',
+      productionSlots: 'production slots',
+    },
+    footer: {
+      copyright: 'EVE Online and all related materials are property of CCP Games.',
+      dataSources:
+        'Data sourced from fuzzwork.co.uk, everef.net, eveonlineships.com. Icons from images.evetech.net.',
+      disclaimer:
+        'Material quantities are base blueprint values. Actual requirements vary with ME, rigs, and implants.',
+    },
+    common: {
+      done: 'done',
+      components: 'components',
+      units: 'units',
+      perUnit: '/ea',
+      reset: 'Reset',
+    },
+  },
+  ru: {
+    title: 'Калькулятор постройки титанов',
+    subtitle: 'EVE Online',
+    selectTitan: 'Выберите титан',
+    shipInfo: {
+      race: 'Империя Амарр',
+      class: 'Титан',
+      baseBuildTime: 'Базовое время постройки',
+      laserDamageBonus: 'Бонус к урону лазеров',
+      judgementDoomsday: 'Думсдей "Судный День"',
+      ewImmune: 'Иммунитет к РЭБ',
+    },
+    skills: {
+      title: 'Навыки',
+      subtitle: 'Влияют на время производства',
+    },
+    blueprint: {
+      title: 'Чертёж',
+      materialEfficiency: 'Эффективность материалов (ME)',
+      timeEfficiency: 'Эффективность времени (TE)',
+      materialMultiplier: 'Множитель материалов',
+      timeMultiplier: 'Множитель времени',
+      avatarBuildTime: 'Время постройки титана',
+      summary: 'Сводка',
+    },
+    tabs: {
+      components: 'Компоненты',
+      minerals: 'Всего минералов',
+      time: 'Оценка времени',
+    },
+    components: {
+      standard: 'Стандартные компоненты капитальных кораблей',
+      advanced: 'Продвинутые компоненты капитальных кораблей',
+      special: 'Специфические компоненты титанов',
+      materialsPerUnit: 'Материалы на единицу (с учётом ME)',
+      timePerUnit: 'Время на тип компонента (все единицы)',
+    },
+    minerals: {
+      title: 'Общая потребность в минералах',
+      subtitle: 'На основе ME {me} • Все {count} компонентов',
+      warning:
+        'Это базовые количества. Фактические требования зависят от ME чертежа, бонусов ригов и имплантов.',
+    },
+    time: {
+      avatarFinalAssembly: 'Финальная сборка титана',
+      baseTime: 'Базовое',
+      componentProductionTimes: 'Время производства компонентов',
+      totalProductionTime: 'Общее время производства (последовательно)',
+      withParallelLines: 'С параллельными линиями (оценка)',
+      productionSlots: 'производственных слотов',
+    },
+    footer: {
+      copyright: 'EVE Online и все связанные материалы являются собственностью CCP Games.',
+      dataSources:
+        'Данные получены с fuzzwork.co.uk, everef.net, eveonlineships.com. Иконки с images.evetech.net.',
+      disclaimer:
+        'Количества минералов — базовые значения чертежей. Фактические требования зависят от ME, ригов и имплантов.',
+    },
+    common: {
+      done: 'готово',
+      components: 'компонентов',
+      units: 'единиц',
+      perUnit: '/шт',
+      reset: 'Сброс',
+    },
+  },
+} as const;
+
+export const ITEM_NAMES: Record<number, { en: string; ru: string }> = {
+  // Minerals
+  34: { en: 'Tritanium', ru: 'Тританиум' },
+  35: { en: 'Pyerite', ru: 'Пирит' },
+  36: { en: 'Mexallon', ru: 'Мексаллон' },
+  37: { en: 'Isogen', ru: 'Изоген' },
+  38: { en: 'Nocxium', ru: 'Ноксиум' },
+  39: { en: 'Zydrine', ru: 'Зидрин' },
+  40: { en: 'Megacyte', ru: 'Мегацит' },
+  11399: { en: 'Morphite', ru: 'Морфит' },
+
+  // PI / reaction materials
+  2872: {
+    en: 'Self-Harmonizing Power Core',
+    ru: 'Самосинхронизирующийся источник энергии',
+  },
+  57457: {
+    en: 'Reinforced Carbon Fiber',
+    ru: 'Армированное углеродное волокно',
+  },
+
+  // Standard capital components
+  21009: {
+    en: 'Capital Propulsion Engine',
+    ru: 'Двигатель капитального класса',
+  },
+  21011: {
+    en: 'Capital Turret Hardpoint',
+    ru: 'Турельная установка капитального класса',
+  },
+  21013: {
+    en: 'Capital Sensor Cluster',
+    ru: 'Сенсорный кластер капитального класса',
+  },
+  21017: {
+    en: 'Capital Armor Plates',
+    ru: 'Броневые плиты капитального класса',
+  },
+  21019: {
+    en: 'Capital Capacitor Battery',
+    ru: 'Конденсаторная батарея капитального класса',
+  },
+  21021: {
+    en: 'Capital Power Generator',
+    ru: 'Генератор энергии капитального класса',
+  },
+  21023: {
+    en: 'Capital Shield Emitter',
+    ru: 'Излучатель щита капитального класса',
+  },
+  21025: {
+    en: 'Capital Jump Drive',
+    ru: 'Прыжковый двигатель капитального класса',
+  },
+  21035: {
+    en: 'Capital Computer System',
+    ru: 'Компьютерная система капитального класса',
+  },
+  21037: {
+    en: 'Capital Construction Parts',
+    ru: 'Строительные части капитального класса',
+  },
+
+  // Advanced capital components
+  24545: {
+    en: 'Capital Jump Bridge Array',
+    ru: 'Массив прыжковых мостов капитального класса',
+  },
+  24547: {
+    en: 'Capital Clone Vat Bay',
+    ru: 'Отсек клонирования капитального класса',
+  },
+  24556: {
+    en: 'Capital Doomsday Weapon Mount',
+    ru: 'Установка оружия судного дня капитального класса',
+  },
+  24558: {
+    en: 'Capital Ship Maintenance Bay',
+    ru: 'Ангар обслуживания кораблей капитального класса',
+  },
+  24560: {
+    en: 'Capital Corporate Hangar Bay',
+    ru: 'Корпоративный ангар капитального класса',
+  },
+
+  // Titan-specific components
+  57470: {
+    en: 'U-C Trigger Neurolink Conduit',
+    ru: 'Нейросвязной канал U-C триггера',
+  },
+  57471: {
+    en: 'Radar-FTL Interlink Communicator',
+    ru: 'Коммуникатор радар-FTL связи',
+  },
+  57472: {
+    en: 'Auto-Integrity Preservation Seal',
+    ru: 'Автоматическая печать сохранения целостности',
+  },
+  57473: {
+    en: 'Life Support Backup Unit',
+    ru: 'Резервный блок жизнеобеспечения',
+  },
+  57474: {
+    en: 'Capital Core Temperature Regulator',
+    ru: 'Регулятор температуры ядра капитального класса',
+  },
+  57475: {
+    en: 'Enhanced Neurolink Protection Cell',
+    ru: 'Усиленная ячейка защиты нейросвязи',
+  },
+
+  // Skills
+  3386: { en: 'Industry', ru: 'Промышленность' },
+  3388: { en: 'Advanced Industry', ru: 'Передовая промышленность' },
+  20533: {
+    en: 'Capital Ship Construction',
+    ru: 'Строительство кораблей большого тоннажа',
+  },
+  3387: {
+    en: 'Advanced Small Ship Construction',
+    ru: 'Передовое строительство малых кораблей',
+  },
+  3394: { en: 'Electronics', ru: 'Электронные системы' },
+  3402: { en: 'Science', ru: 'Наука' },
+  3403: { en: 'Research', ru: 'Исследования' },
+  3409: { en: 'Metallurgy', ru: 'Металлургия' },
+};
+
+export const SKILL_DESCRIPTIONS: Record<Language, Record<number, string>> = {
+  en: {
+    3386: '-4% manufacturing time per level',
+    3388: '-5% manufacturing time per level',
+    20533: 'Required to build Titans (Level 5)',
+    3387: '-2% capital component time per level',
+    3394: 'Prerequisite for advanced skills',
+    3402: 'Required for blueprint research',
+    3403: 'Reduces blueprint research time',
+    3409: 'Reduces ME research time',
+  },
+  ru: {
+    3386: '-4% к длительности производственных проектов',
+    3388: '-5% к длительности производственных проектов',
+    20533: 'Требуется для производства кораблей большого тоннажа (5 уровень)',
+    3387: '-2% к времени производства компонентов капитальных кораблей',
+    3394: 'Необходим для работы с бортовой электроникой',
+    3402: '+5% к скорости копирования чертежей',
+    3403: '+5% к скорости исследования чертежей',
+    3409: '+5% к скорости исследования эффективности производства',
+  },
+};
+
+export function getItemName(typeId: number, lang: Language): string {
+  return ITEM_NAMES[typeId]?.[lang] ?? `Item ${typeId}`;
+}
+
+export function getMineralName(typeId: number, lang: Language): string {
+  return getItemName(typeId, lang);
+}
+
+export function getComponentName(typeId: number, lang: Language): string {
+  return getItemName(typeId, lang);
+}
+
+export function getSkillName(typeId: number, lang: Language): string {
+  return getItemName(typeId, lang);
+}
+
+export function getSkillDescription(typeId: number, lang: Language): string {
+  return SKILL_DESCRIPTIONS[lang][typeId] ?? '';
+}
+
+const MINERAL_IDS = [34, 35, 36, 37, 38, 39, 40, 11399, 2872, 57457];
+
+const buildNameMap = (ids: number[], lang: Language): Record<number, string> =>
+  ids.reduce<Record<number, string>>((acc, id) => {
+    acc[id] = getItemName(id, lang);
+    return acc;
+  }, {});
+
+export const MINERAL_NAMES: Record<Language, Record<number, string>> = {
+  en: buildNameMap(MINERAL_IDS, 'en'),
+  ru: buildNameMap(MINERAL_IDS, 'ru'),
+};
+
+export const COMPONENT_NAMES: Record<Language, Record<number, string>> = {
+  en: buildNameMap(
+    [
+      21009, 21011, 21013, 21017, 21019, 21021, 21023, 21025, 21035, 21037,
+      24545, 24547, 24556, 24558, 24560,
+      57470, 57471, 57472, 57473, 57474, 57475,
+      2872, 57457,
+    ],
+    'en'
+  ),
+  ru: buildNameMap(
+    [
+      21009, 21011, 21013, 21017, 21019, 21021, 21023, 21025, 21035, 21037,
+      24545, 24547, 24556, 24558, 24560,
+      57470, 57471, 57472, 57473, 57474, 57475,
+      2872, 57457,
+    ],
+    'ru'
+  ),
+};
+
+export const SKILL_NAMES: Record<Language, Record<number, string>> = {
+  en: buildNameMap([3386, 3388, 20533, 3387, 3394, 3402, 3403, 3409], 'en'),
+  ru: buildNameMap([3386, 3388, 20533, 3387, 3394, 3402, 3403, 3409], 'ru'),
+};

@@ -1,0 +1,153 @@
+import type { ComponentCategory, Language } from '../types';
+
+export interface ComponentRequirement {
+  categoryId: ComponentCategory;
+  typeId: number;
+  quantity: number;
+  name: string;
+  nameRu: string;
+  productionTime: number;
+  materials: Record<number, number>;
+}
+
+export interface TimeJob {
+  typeId: number;
+  name: string;
+  unitTime: number;
+  count: number;
+  total: number;
+  category: ComponentCategory;
+}
+
+export interface MineralTotal {
+  typeId: number;
+  quantity: number;
+}
+
+export function clampNumber(value: number, min: number, max: number): number {
+  if (Number.isNaN(value)) return min;
+  return Math.max(min, Math.min(max, Math.floor(value)));
+}
+
+/**
+ * ME 0..10.
+ * ME 10 => -10% materials.
+ */
+export function materialMultiplier(me: number): number {
+  return Math.max(0.01, 1 - clampNumber(me, 0, 10) / 100);
+}
+
+/**
+ * TE 0..10.
+ * Industry L1..L5 => -4% per level.
+ * Advanced Industry L1..L5 => -5% per level.
+ */
+export function timeMultiplier(
+  te: number,
+  industryLevel: number,
+  advancedIndustryLevel: number
+): number {
+  const teFactor = 1 - clampNumber(te, 0, 10) / 100;
+  const industryFactor = 1 - clampNumber(industryLevel, 0, 5) * 0.04;
+  const advancedIndustryFactor = 1 - clampNumber(advancedIndustryLevel, 0, 5) * 0.05;
+
+  return Math.max(0.01, teFactor * industryFactor * advancedIndustryFactor);
+}
+
+export function aggregateMinerals(
+  requirements: ComponentRequirement[],
+  matMultiplier: number
+): { list: MineralTotal[]; totalUnits: number } {
+  const map = new Map<number, number>();
+
+  for (const req of requirements) {
+    for (const [typeIdString, quantity] of Object.entries(req.materials)) {
+      const typeId = Number(typeIdString);
+      const value = quantity * req.quantity * matMultiplier;
+      map.set(typeId, (map.get(typeId) ?? 0) + value);
+    }
+  }
+
+  const list: MineralTotal[] = Array.from(map, ([typeId, raw]) => ({
+    typeId,
+    quantity: Math.ceil(raw),
+  }));
+
+  list.sort((a, b) => b.quantity - a.quantity);
+
+  const totalUnits = list.reduce((sum, item) => sum + item.quantity, 0);
+
+  return { list, totalUnits };
+}
+
+export function buildTimeJobs(
+  requirements: ComponentRequirement[],
+  timeMult: number,
+  lang: Language
+): TimeJob[] {
+  return requirements
+    .map((req) => {
+      const unitTime = req.productionTime * timeMult;
+
+      return {
+        typeId: req.typeId,
+        name: lang === 'ru' ? req.nameRu : req.name,
+        unitTime,
+        count: req.quantity,
+        total: unitTime * req.quantity,
+        category: req.categoryId,
+      };
+    })
+    .filter((job) => job.unitTime > 0 && job.count > 0)
+    .sort((a, b) => b.total - a.total);
+}
+
+export function sequentialTime(jobs: TimeJob[]): number {
+  return jobs.reduce((sum, job) => sum + job.total, 0);
+}
+
+/**
+ * Greedy parallel schedule estimate.
+ * Not an optimal solver, but much better than naive division.
+ */
+export function estimateParallelTime(jobs: TimeJob[], slots: number): number {
+  const totalUnits = jobs.reduce((sum, job) => sum + job.count, 0);
+
+  if (totalUnits === 0) return 0;
+
+  const machineCount = clampNumber(slots, 1, totalUnits);
+
+  if (machineCount === 1) {
+    return sequentialTime(jobs);
+  }
+
+  if (machineCount >= totalUnits) {
+    return jobs.reduce((max, job) => Math.max(max, job.unitTime), 0);
+  }
+
+  const ends = new Array(machineCount).fill(0) as number[];
+  const sorted = [...jobs].sort((a, b) => b.unitTime - a.unitTime);
+
+  for (const job of sorted) {
+    for (let i = 0; i < job.count; i += 1) {
+      let minIndex = 0;
+
+      for (let machine = 1; machine < ends.length; machine += 1) {
+        if (ends[machine] < ends[minIndex]) {
+          minIndex = machine;
+        }
+      }
+
+      ends[minIndex] += job.unitTime;
+    }
+  }
+
+  return ends.reduce((max, value) => Math.max(max, value), 0);
+}
+
+export function theoreticalLowerBound(jobs: TimeJob[], slots: number): number {
+  const maxUnitTime = jobs.reduce((max, job) => Math.max(max, job.unitTime), 0);
+  const avgLoad = sequentialTime(jobs) / Math.max(1, slots);
+
+  return Math.max(maxUnitTime, avgLoad);
+}

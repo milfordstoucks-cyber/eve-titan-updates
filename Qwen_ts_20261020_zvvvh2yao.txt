@@ -1,0 +1,61 @@
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
+
+const sourceFiles = import.meta.glob(
+  [
+    '/src/**/*.{ts,tsx,css}',
+    '/index.html',
+    '/package.json',
+    '/README.md',
+    '/vite.config.ts',
+    '/tailwind.config.js',
+    '/postcss.config.js',
+    '/tsconfig.json',
+  ],
+  {
+    query: '?raw',
+    import: 'default',
+    eager: true,
+  }
+) as Record<string, string>;
+
+export async function downloadAllSources(): Promise<void> {
+  const zip = new JSZip();
+
+  const entries = Object.entries(sourceFiles).sort(([a], [b]) => a.localeCompare(b));
+
+  for (const [path, content] of entries) {
+    const cleanPath = path.replace(/^\/+/, '');
+    zip.file(cleanPath, content);
+  }
+
+  const instructions = [
+    '# EVE Online Titan Construction Calculator',
+    '',
+    '## Install',
+    '',
+    '```bash',
+    'npm install',
+    'npm run dev',
+    '```',
+    '',
+    'Then open http://localhost:5173',
+    '',
+    '## Notes',
+    '',
+    'This archive contains project source files generated from the running Vite app.',
+    'EVE Online and related materials are property of CCP Games.',
+  ].join('\n');
+
+  zip.file('BUILD_INSTRUCTIONS.md', instructions);
+
+  const blob = await zip.generateAsync({
+    type: 'blob',
+    compression: 'DEFLATE',
+    compressionOptions: {
+      level: 6,
+    },
+  });
+
+  saveAs(blob, 'eve-titan-calculator-sources.zip');
+}

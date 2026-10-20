@@ -1,0 +1,235 @@
+import { EVE_ICON, EVE_RENDER } from '../lib/eve';
+import type { TitanData } from '../types';
+
+export type { TitanData };
+
+export const TITANS: Record<string, TitanData> = {
+  avatar: {
+    typeId: 11567,
+    blueprintTypeId: 11568,
+    name: 'Avatar',
+    race: 'Amarr',
+    raceRu: 'Империя Амарр',
+    icon: EVE_ICON(11567),
+    render: EVE_RENDER(11567),
+    baseTime: 5227200,
+    description:
+      "The Avatar is the Amarr Empire's Titan, armed with laser-based doomsday weapons.",
+    descriptionRu:
+      'Avatar — титан Империи Амарр, вооружённый лазерным оружием судного дня.',
+    bonuses: [
+      '100% bonus to Capital Energy Turret damage per level',
+      "7.5% bonus to fleet members' capacitor recharge rate per level",
+      'Can fit Judgement doomsday device',
+      'Immune to all forms of Electronic Warfare',
+    ],
+    bonusesRu: [
+      '+100% к урону тяжёлых энергетических орудий за уровень',
+      '+7.5% к скорости перезарядки конденсатора членов флота за уровень',
+      'Может установить думсдей "Судный День"',
+      'Иммунитет ко всем видам РЭБ',
+    ],
+    components: {
+      standard: {
+        21009: 80,
+        21011: 400,
+        21013: 100,
+        21017: 400,
+        21019: 400,
+        21021: 300,
+        21023: 50,
+        21025: 300,
+        21035: 200,
+        21037: 200,
+      },
+      advanced: {
+        24545: 500,
+        24547: 500,
+        24556: 500,
+        24558: 500,
+        24560: 500,
+      },
+      special: {
+        57470: 192,
+        57471: 250,
+        57472: 3200,
+        57473: 1600,
+        57474: 25,
+        57475: 1,
+      },
+    },
+  },
+
+  erebus: {
+    typeId: 671,
+    blueprintTypeId: 1002,
+    name: 'Erebus',
+    race: 'Gallente',
+    raceRu: 'Федерация Галленте',
+    icon: EVE_ICON(671),
+    render: EVE_RENDER(671),
+    baseTime: 5227200,
+    description:
+      "The Erebus is the Gallente Federation's Titan, armed with hybrid turret doomsday weapons.",
+    descriptionRu:
+      'Erebus — титан Федерации Галленте, вооружён гибридными орудиями судного дня.',
+    bonuses: [
+      '100% bonus to Capital Hybrid Turret damage per level',
+      "7.5% bonus to fleet members' maximum armor hitpoints per level",
+      'Can fit Aurora Ominae doomsday device',
+      'Immune to all forms of Electronic Warfare',
+    ],
+    bonusesRu: [
+      '+100% к урону тяжёлых гибридных орудий за уровень',
+      '+7.5% к максимальному запасу прочности брони членов флота за уровень',
+      'Может установить думсдей "Аврора Оминаэ"',
+      'Иммунитет ко всем видам РЭБ',
+    ],
+    components: {
+      standard: {
+        21009: 80,
+        21011: 400,
+        21013: 200,
+        21017: 300,
+        21019: 400,
+        21021: 222,
+        21023: 150,
+        21025: 300,
+        21035: 100,
+        21037: 200,
+      },
+      advanced: {
+        24545: 500,
+        24547: 500,
+        24556: 500,
+        24558: 500,
+        24560: 500,
+      },
+      special: {
+        57470: 192,
+        57471: 250,
+        57472: 3200,
+        57473: 1600,
+        57474: 25,
+        57475: 1,
+      },
+    },
+  },
+
+  leviathan: {
+    typeId: 3764,
+    blueprintTypeId: 3765,
+    name: 'Leviathan',
+    race: 'Caldari',
+    raceRu: 'Государство Калдари',
+    icon: EVE_ICON(3764),
+    render: EVE_RENDER(3764),
+    baseTime: 5227200,
+    description:
+      "The Leviathan is the Caldari State's Titan, equipped with missile-based doomsday weapons.",
+    descriptionRu:
+      'Leviathan — титан Государства Калдари, оснащён ракетным оружием судного дня.',
+    bonuses: [
+      '100% bonus to Capital Cruise Missile damage per level',
+      "7.5% bonus to fleet members' maximum shield hitpoints per level",
+      'Can fit World Collapser doomsday device',
+      'Immune to all forms of Electronic Warfare',
+    ],
+    bonusesRu: [
+      '+100% к урону тяжёлых крылатых ракет за уровень',
+      '+7.5% к максимальному запасу прочности щита членов флота за уровень',
+      'Может установить думсдей "Крушитель Миров"',
+      'Иммунитет ко всем видам РЭБ',
+    ],
+    components: {
+      standard: {
+        21009: 100,
+        21011: 33,
+        21013: 100,
+        21017: 200,
+        21019: 400,
+        21021: 200,
+        21023: 400,
+        21025: 300,
+        21035: 200,
+        21037: 200,
+      },
+      advanced: {
+        24545: 500,
+        24547: 500,
+        24556: 500,
+        24558: 500,
+        24560: 500,
+      },
+      special: {
+        57470: 192,
+        57471: 250,
+        57472: 3200,
+        57473: 1600,
+        57474: 25,
+        57475: 1,
+      },
+    },
+  },
+
+  ragnarok: {
+    typeId: 23773,
+    blueprintTypeId: 23774,
+    name: 'Ragnarok',
+    race: 'Minmatar',
+    raceRu: 'Республика Минматар',
+    icon: EVE_ICON(23773),
+    render: EVE_RENDER(23773),
+    baseTime: 5227200,
+    description:
+      "The Ragnarok is the Minmatar Republic's Titan, armed with projectile doomsday weapons.",
+    descriptionRu:
+      'Ragnarok — титан Республики Минматар, вооружён снарядным оружием судного дня.',
+    bonuses: [
+      '100% bonus to Capital Projectile Turret damage per level',
+      "7.5% bonus to fleet members' maximum velocity per level",
+      'Can fit Ragnarök doomsday device',
+      'Immune to all forms of Electronic Warfare',
+    ],
+    bonusesRu: [
+      '+100% к урону тяжёлых снарядных орудий за уровень',
+      '+7.5% к максимальной скорости членов флота за уровень',
+      'Может установить думсдей "Рагнарёк"',
+      'Иммунитет ко всем видам РЭБ',
+    ],
+    components: {
+      standard: {
+        21009: 100,
+        21011: 44,
+        21013: 100,
+        21017: 300,
+        21019: 400,
+        21021: 222,
+        21023: 150,
+        21025: 300,
+        21035: 200,
+        21037: 200,
+      },
+      advanced: {
+        24545: 500,
+        24547: 500,
+        24556: 500,
+        24558: 500,
+        24560: 500,
+      },
+      special: {
+        57470: 192,
+        57471: 250,
+        57472: 3200,
+        57473: 1600,
+        57474: 25,
+        57475: 1,
+      },
+    },
+  },
+};
+
+export const TITAN_LIST = Object.entries(TITANS).map(([key, data]) => ({
+  key,
+  ...data,
+}));

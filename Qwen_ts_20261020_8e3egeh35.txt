@@ -1,0 +1,56 @@
+export { EVE_ICON } from '../lib/eve';
+export { formatTime, formatNumber } from '../lib/format';
+export { calculateProductionTime } from '../lib/calculations';
+
+export { SKILLS } from './skills';
+
+export type {
+  ComponentMaterial,
+  Mineral,
+  Skill,
+} from '../types';
+
+import {
+  COMPONENT_DEFS,
+  MATERIAL_DEFS,
+  toComponentMaterial,
+} from './components';
+import { TITANS } from './titans';
+import { EVE_ICON } from '../lib/eve';
+import { getItemName } from './localization';
+import type { ComponentMaterial, Mineral } from '../types';
+
+const avatarQuantities = TITANS.avatar.components;
+
+export const MINERALS: Mineral[] = Object.entries(MATERIAL_DEFS)
+  .filter(([, def]) => def.category === 'mineral')
+  .map(([typeIdString]) => {
+    const typeId = Number(typeIdString);
+
+    return {
+      typeId,
+      name: getItemName(typeId, 'en'),
+      icon: EVE_ICON(typeId),
+    };
+  });
+
+const toLegacyComponent = (def: (typeof COMPONENT_DEFS)[number]): ComponentMaterial =>
+  toComponentMaterial(def, avatarQuantities[def.category][def.typeId] ?? 0);
+
+export const STANDARD_COMPONENTS: ComponentMaterial[] = COMPONENT_DEFS.filter(
+  (component) => component.category === 'standard'
+).map(toLegacyComponent);
+
+export const ADVANCED_COMPONENTS: ComponentMaterial[] = COMPONENT_DEFS.filter(
+  (component) => component.category === 'advanced'
+).map(toLegacyComponent);
+
+export const SPECIAL_COMPONENTS: ComponentMaterial[] = COMPONENT_DEFS.filter(
+  (component) => component.category === 'special'
+).map(toLegacyComponent);
+
+export const ALL_COMPONENTS: ComponentMaterial[] = [
+  ...STANDARD_COMPONENTS,
+  ...ADVANCED_COMPONENTS,
+  ...SPECIAL_COMPONENTS,
+];

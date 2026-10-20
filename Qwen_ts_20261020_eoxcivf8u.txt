@@ -1,0 +1,53 @@
+import { COMPONENT_DEFS, buildMaterials } from './components';
+import { TITANS } from './titans';
+import { EVE_ICON } from '../lib/eve';
+import { getItemName } from './localization';
+import { formatProductionTime } from '../lib/format';
+import type { Material, MaterialCategory, ProductionNode } from '../types';
+
+export type { Material, ProductionNode, MaterialCategory };
+
+export { formatProductionTime };
+
+export const MATERIAL_CATEGORIES: Record<
+  MaterialCategory,
+  { name: string; nameRu: string; color: string }
+> = {
+  mineral: { name: 'Minerals', nameRu: 'Минералы', color: 'blue' },
+  pi: { name: 'Planetary Materials', nameRu: 'Планетарные материалы', color: 'green' },
+  reaction: { name: 'Reaction Materials', nameRu: 'Реактивные материалы', color: 'purple' },
+  gas: { name: 'Gases', nameRu: 'Газы', color: 'cyan' },
+  moon: { name: 'Moon Materials', nameRu: 'Лунные материалы', color: 'yellow' },
+  component: { name: 'Components', nameRu: 'Компоненты', color: 'orange' },
+};
+
+const avatarQuantities = TITANS.avatar.components;
+
+export const ALL_COMPONENTS_TREE: ProductionNode[] = COMPONENT_DEFS.map((def) => ({
+  typeId: def.typeId,
+  name: getItemName(def.typeId, 'en'),
+  nameRu: getItemName(def.typeId, 'ru'),
+  icon: EVE_ICON(def.typeId),
+  quantity: avatarQuantities[def.category][def.typeId] ?? 1,
+  category: 'component',
+  blueprintTypeId: def.blueprintTypeId,
+  productionTime: def.productionTime,
+  materials: buildMaterials(def.materials),
+}));
+
+export const COMPONENT_TREE_MAP = new Map(
+  ALL_COMPONENTS_TREE.map((node) => [node.typeId, node])
+);
+
+export function getProductionNode(typeId: number): ProductionNode | undefined {
+  return COMPONENT_TREE_MAP.get(typeId);
+}
+
+export function getMaterialInfo(typeId: number): Material | undefined {
+  for (const node of ALL_COMPONENTS_TREE) {
+    const material = node.materials.find((item) => item.typeId === typeId);
+    if (material) return material;
+  }
+
+  return undefined;
+}

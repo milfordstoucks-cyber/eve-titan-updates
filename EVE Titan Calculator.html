@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Titan Calculator — EVE Online</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap">
+<style>
+:root{--bg:#f1f3f5;--panel:#fff;--line:#d5dbe1;--tx:#16202b;--mute:#5d6b79;--ac:#8a5a00;--acbg:#f7e9c9;--ok:#14705f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f151c;--panel:#17202a;--line:#2a3644;--tx:#e1e8ef;--mute:#8d9bab;--ac:#e0b05a;--acbg:#33290f;--ok:#4fc1ae}}
+:root[data-theme="dark"]{--bg:#0f151c;--panel:#17202a;--line:#2a3644;--tx:#e1e8ef;--mute:#8d9bab;--ac:#e0b05a;--acbg:#33290f;--ok:#4fc1ae}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 Barlow,system-ui,sans-serif}
+main{max-width:1060px;margin:0 auto;padding:16px}
+h1,h2{font-family:"Barlow Condensed",Barlow,sans-serif;margin:0;letter-spacing:.01em}
+h1{font-size:30px}h2{font-size:20px;margin-bottom:10px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.sub{color:var(--mute);margin:0}
+.grid{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:860px){.grid{grid-template-columns:340px 1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px}
+.stack{display:grid;gap:14px;align-content:start}
+.titans{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.titans button,.seg button,.lang button{font:inherit;color:var(--tx);background:none;border:1px solid var(--line);border-radius:6px;padding:8px 4px;cursor:pointer}
+.titans button{display:grid;gap:2px;justify-items:center;font-weight:600}
+.titans small{color:var(--mute);font-weight:400;font-size:11px}
+button[aria-pressed=true]{background:var(--acbg);border-color:var(--ac)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+label{display:grid;gap:4px;margin-bottom:10px;font-weight:500}
+label span{display:flex;justify-content:space-between}
+output,.num{font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--ac)}
+input[type=number],select{font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px;width:100%}
+.seg{display:flex;gap:6px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{border-left:3px solid var(--ac);padding-left:10px}
+.kpi b{display:block;font:700 24px "Barlow Condensed",sans-serif}
+.kpi span{color:var(--mute);font-size:13px}
+.wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--mute);font-weight:500;font-size:13px}
+td input{width:96px;text-align:right;padding:3px 6px}
+tfoot td{font-weight:600;border-bottom:0}
+.act{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.act button{font:inherit;background:var(--ac);color:var(--bg);border:0;border-radius:6px;padding:8px 14px;cursor:pointer;font-weight:600}
+.act button.alt{background:none;color:var(--tx);border:1px solid var(--line)}
+.note{color:var(--mute);font-size:13px;margin:10px 0 0}
+.ok{color:var(--ok)}
+@media(prefers-reduced-motion:no-preference){.kpi b{transition:color .2s}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div><h1 id="t-title"></h1><p class="sub" id="t-sub"></p></div>
+  <div class="seg lang" role="group" aria-label="Language"><button data-l="ru">RU</button><button data-l="en">EN</button></div>
+</header>
+<div class="grid">
+  <div class="stack">
+    <section class="card"><h2 id="t-ship"></h2><div class="titans" id="titans"></div></section>
+    <section class="card"><h2 id="t-params"></h2>
+      <label><span id="t-qty"></span><input type="number" id="qty" min="1" max="20" value="1"></label>
+      <label><span><i id="t-me"></i><output id="meo"></output></span><input type="range" id="me" min="0" max="10" value="10"></label>
+      <label><span><i id="t-te"></i><output id="teo"></output></span><input type="range" id="te" min="0" max="20" step="2" value="20"></label>
+      <label><span id="t-struct"></span><select id="struct"></select></label>
+      <label><span><i id="t-rig"></i><output id="rigo"></output></span><input type="range" id="rig" min="0" max="4.2" step="0.1" value="0"></label>
+      <label><span><i id="t-ind"></i><output id="indo"></output></span><input type="range" id="ind" min="0" max="5" value="5"></label>
+      <label><span><i id="t-adv"></i><output id="advo"></output></span><input type="range" id="adv" min="0" max="5" value="5"></label>
+      <label><span id="t-slots"></span><input type="number" id="slots" min="1" max="200" value="10"></label>
+    </section>
+  </div>
+  <div class="stack">
+    <section class="card"><div class="kpis" id="kpis"></div></section>
+    <section class="card"><h2 id="t-min"></h2><div class="wrap"><table id="mt"></table></div>
+      <div class="act"><button id="csv"></button><button class="alt" id="copy"></button><button class="alt" id="reset"></button></div>
+      <p class="note" id="t-note"></p></section>
+    <section class="card"><h2 id="t-comp"></h2><div class="wrap"><table id="ct"></table></div></section>
+  </div>
+</div>
+</main>
+<script>
+const MIN=[[34,'Tritanium','Тританиум'],[35,'Pyerite','Пирит'],[36,'Mexallon','Мексаллон'],[37,'Isogen','Изоген'],[38,'Nocxium','Ноксиум'],[39,'Zydrine','Зидрин'],[40,'Megacyte','Мегацит'],[11399,'Morphite','Морфит'],[2872,'Self-Harmonizing Power Core','Самосинх. источник энергии'],[57457,'Reinforced Carbon Fiber','Армированное углеродное волокно']];
+const std=(a,b,c,d,e,f,g)=>({34:a,35:b,36:c,37:d,38:e,39:f,40:g,2872:1,57457:100});
+const adv=(a,b,c,d,e,f,g)=>({34:a,35:b,36:c,37:d,38:e,39:f,40:g});
+const sp=(a,b,c,d,e,f,g,m)=>({34:a,35:b,36:c,37:d,38:e,39:f,40:g,11399:m});
+const C={
+21009:['Capital Propulsion Engine',15600,std(40500,146250,40500,11250,1125,570,285)],
+21011:['Capital Turret Hardpoint',15600,std(27750,101250,28500,7500,750,390,188)],
+21013:['Capital Sensor Cluster',15600,std(40500,146250,40500,11250,1125,570,285)],
+21017:['Capital Armor Plates',15600,std(45000,157500,45000,12000,1200,615,308)],
+21019:['Capital Capacitor Battery',15600,std(39000,142500,39000,11250,1125,548,278)],
+21021:['Capital Power Generator',15600,std(45000,157500,45000,12000,1200,615,308)],
+21023:['Capital Shield Emitter',15600,std(40500,146250,40500,11250,1125,570,285)],
+21025:['Capital Jump Drive',15600,std(60000,216000,60000,16875,1688,900,420)],
+21035:['Capital Computer System',15600,std(30000,105000,30000,9000,750,413,210)],
+21037:['Capital Construction Parts',15600,std(30000,105000,30000,9000,750,413,210)],
+24545:['Capital Jump Bridge Array',172800,adv(60000,216000,60000,16875,1688,900,420)],
+24547:['Capital Clone Vat Bay',172800,adv(50000,180000,50000,14000,1400,750,350)],
+24556:['Capital Doomsday Weapon Mount',172800,adv(60000,216000,60000,16875,1688,900,420)],
+24558:['Capital Ship Maintenance Bay',172800,adv(35000,120000,35000,10000,850,450,230)],
+24560:['Capital Corporate Hangar Bay',172800,adv(35000,120000,35000,10000,850,450,230)],
+57470:['U-C Trigger Neurolink Conduit',43200,sp(15000,50000,15000,4500,375,200,100,50)],
+57471:['Radar-FTL Interlink Communicator',43200,sp(20000,70000,20000,6000,500,270,135,67)],
+57472:['Auto-Integrity Preservation Seal',14400,adv(5000,18000,5000,1500,125,67,34)],
+57473:['Life Support Backup Unit',21600,adv(8000,28000,8000,2400,200,107,54)],
+57474:['Capital Core Temperature Regulator',172800,sp(100000,360000,100000,28000,2800,1500,750,375)],
+57475:['Enhanced Neurolink Protection Cell',604800,sp(500000,1800000,500000,140000,14000,7500,3750,1875)]};
+const COM={24545:500,24547:500,24556:500,24558:500,24560:500,57470:192,57471:250,57472:3200,57473:1600,57474:25,57475:1};
+const T={
+avatar:{n:'Avatar',r:['Amarr','Амарр'],c:{21009:80,21011:400,21013:100,21017:400,21019:400,21021:300,21023:50,21025:300,21035:200,21037:200}},
+erebus:{n:'Erebus',r:['Gallente','Галленте'],c:{21009:80,21011:400,21013:200,21017:300,21019:400,21021:222,21023:150,21025:300,21035:100,21037:200}},
+leviathan:{n:'Leviathan',r:['Caldari','Калдари'],c:{21009:100,21011:33,21013:100,21017:200,21019:400,21021:200,21023:400,21025:300,21035:200,21037:200}},
+ragnarok:{n:'Ragnarok',r:['Minmatar','Минматар'],c:{21009:100,21011:44,21013:100,21017:300,21019:400,21021:222,21023:150,21025:300,21035:200,21037:200}}};
+const FINAL=5227200;
+const STR=[['NPC / station',0,0],['Raitaru',1,15],['Azbel',1,20],['Sotiyo',1,30]];
+const L={
+ru:{title:'Калькулятор постройки титанов',sub:'EVE Online · материалы, время и стоимость',ship:'Титан',params:'Параметры',qty:'Количество титанов',me:'ME чертежа: ',te:'TE чертежа: ',struct:'Структура',rig:'Риги на ME: ',ind:'Industry: ',adv:'Advanced Industry: ',slots:'Производственных слотов',min:'Материалы и стоимость',comp:'Компоненты',mat:'Материал',need:'Нужно',price:'Цена, ISK',cost:'Стоимость',total:'Итого',name:'Компонент',cnt:'Шт.',time:'Время',csv:'Скачать CSV',copy:'Копировать список',reset:'Сбросить',copied:'Скопировано',note:'Цены вводятся вручную и сохраняются в браузере. Количества компонентов и материалов взяты из исходного проекта и не сверены с актуальным SDE — проверьте их перед закупкой.',k1:'Всего ISK',k2:'Время (1 слот)',k3:'Время (слоты)',k4:'Сборка титана',ownTime:'Время одного'},
+en:{title:'Titan Construction Calculator',sub:'EVE Online · materials, time and cost',ship:'Titan',params:'Parameters',qty:'Number of titans',me:'Blueprint ME: ',te:'Blueprint TE: ',struct:'Structure',rig:'ME rigs: ',ind:'Industry: ',adv:'Advanced Industry: ',slots:'Production slots',min:'Materials and cost',comp:'Components',mat:'Material',need:'Required',price:'Price, ISK',cost:'Cost',total:'Total',name:'Component',cnt:'Qty',time:'Time',csv:'Download CSV',copy:'Copy list',reset:'Reset',copied:'Copied',note:'Prices are entered by hand and kept in this browser. Component and material quantities come from the original project and are not verified against the current SDE — check them before buying.',k1:'Total ISK',k2:'Time (1 slot)',k3:'Time (slots)',k4:'Titan assembly',ownTime:'Single job'}};
+const $=id=>document.getElementById(id);
+const S={lang:'ru',titan:'avatar',qty:1,me:10,te:20,struct:0,rig:0,ind:5,adv:5,slots:10,prices:{}};
+try{Object.assign(S,JSON.parse(localStorage.getItem('titanCalc')||'{}'))}catch(e){}
+const save=()=>{try{localStorage.setItem('titanCalc',JSON.stringify(S))}catch(e){}};
+const fmt=n=>Math.round(n).toLocaleString(S.lang==='ru'?'ru-RU':'en-US');
+const dur=s=>{const d=Math.floor(s/86400),h=Math.floor(s%86400/3600),m=Math.floor(s%3600/60);return (d?d+(S.lang==='ru'?' д ':'d '):'')+(h||d?h+(S.lang==='ru'?' ч ':'h '):'')+(d?'':m+(S.lang==='ru'?' м':'m'))};
+function calc(){
+  const st=STR[S.struct],matMul=(1-S.me/100)*(1-st[1]/100)*(1-S.rig/100);
+  const timeMul=(1-S.te/100)*(1-.04*S.ind)*(1-.03*S.adv)*(1-st[2]/100);
+  const counts={};
+  const t=T[S.titan];
+  for(const k in t.c)counts[k]=t.c[k]*S.qty;
+  for(const k in COM)counts[k]=COM[k]*S.qty;
+  const tot={};let seq=0,longest=0;const rows=[];
+  for(const id in counts){
+    const [name,bt,m]=C[id],n=counts[id];
+    // materials per unit are rounded up per job, never below 1 (EVE rule)
+    for(const mid in m)tot[mid]=(tot[mid]||0)+Math.max(1,Math.ceil(m[mid]*matMul))*n;
+    const one=bt*timeMul;seq+=one*n;longest=Math.max(longest,one);rows.push([name,n,one,one*n]);
+  }
+  const fin=FINAL*timeMul*S.qty;
+  const par=Math.max(longest,seq/S.slots);
+  return{tot,rows,seq,par,fin,matMul,timeMul};
+}
+function render(){
+  const l=L[S.lang],r=calc();
+  document.documentElement.lang=S.lang;
+  const set=(i,v)=>$(i).textContent=v;
+  set('t-title',l.title);set('t-sub',l.sub);set('t-ship',l.ship);set('t-params',l.params);set('t-qty',l.qty);
+  set('t-me',l.me);set('t-te',l.te);set('t-struct',l.struct);set('t-rig',l.rig);set('t-ind',l.ind);set('t-adv',l.adv);set('t-slots',l.slots);
+  set('t-min',l.min);set('t-comp',l.comp);set('csv',l.csv);set('copy',l.copy);set('reset',l.reset);set('t-note',l.note);
+  set('meo',S.me);set('teo',S.te+'%');set('rigo',S.rig+'%');set('indo',S.ind);set('advo',S.adv);
+  document.querySelectorAll('.lang button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.l===S.lang));
+  $('titans').innerHTML=Object.entries(T).map(([k,v])=>`<button data-t="${k}" aria-pressed="${k===S.titan}">${v.n}<small>${S.lang==='ru'?v.r[1]:v.r[0]}</small></button>`).join('');
+  $('struct').innerHTML=STR.map((s,i)=>`<option value="${i}"${i===S.struct?' selected':''}>${s[0]}${s[1]||s[2]?` (−${s[1]}% ME, −${s[2]}% TE)`:''}</option>`).join('');
+  let isk=0;
+  const rows=MIN.filter(m=>r.tot[m[0]]).map(m=>{const q=r.tot[m[0]],p=+S.prices[m[0]]||0;isk+=q*p;return`<tr><td>${S.lang==='ru'?m[2]:m[1]}</td><td class="num">${fmt(q)}</td><td><input type="number" min="0" step="any" data-p="${m[0]}" value="${p||''}" aria-label="${l.price}: ${m[1]}"></td><td class="num">${fmt(q*p)}</td></tr>`}).join('');
+  $('mt').innerHTML=`<thead><tr><th>${l.mat}</th><th>${l.need}</th><th>${l.price}</th><th>${l.cost}</th></tr></thead><tbody>${rows}</tbody><tfoot><tr><td colspan="3">${l.total}</td><td class="num">${fmt(isk)}</td></tr></tfoot>`;
+  $('ct').innerHTML=`<thead><tr><th>${l.name}</th><th>${l.cnt}</th><th>${l.ownTime}</th><th>${l.time}</th></tr></thead><tbody>${r.rows.map(x=>`<tr><td>${x[0]}</td><td class="num">${fmt(x[1])}</td><td class="num">${dur(x[2])}</td><td class="num">${dur(x[3])}</td></tr>`).join('')}</tbody>`;
+  $('kpis').innerHTML=[[l.k1,fmt(isk)],[l.k2,dur(r.seq)],[l.k3,dur(r.par)],[l.k4,dur(r.fin)]].map(k=>`<div class="kpi"><b>${k[1]}</b><span>${k[0]}</span></div>`).join('');
+  ['qty','me','te','rig','ind','adv','slots'].forEach(k=>{if($(k).value!=S[k])$(k).value=S[k]});
+  window._r=r;
+}
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button');if(!t)return;
+  if(t.dataset.t){S.titan=t.dataset.t}
+  else if(t.dataset.l){S.lang=t.dataset.l}
+  else if(t.id==='reset'){Object.assign(S,{qty:1,me:10,te:20,struct:0,rig:0,ind:5,adv:5,slots:10,prices:{}})}
+  else if(t.id==='csv'||t.id==='copy'){
+    const l=L[S.lang],lines=[['Material','Qty','Price','Cost']];
+    MIN.filter(m=>window._r.tot[m[0]]).forEach(m=>{const q=window._r.tot[m[0]],p=+S.prices[m[0]]||0;lines.push([m[1],q,p,q*p])});
+    if(t.id==='copy'){navigator.clipboard&&navigator.clipboard.writeText(lines.map(x=>x.slice(0,2).join('\t')).join('\n')).then(()=>{t.textContent=l.copied;setTimeout(render,1200)});return}
+    const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([lines.map(x=>x.join(',')).join('\n')],{type:'text/csv'}));a.download='titan-materials.csv';a.click();return;
+  }else return;
+  save();render();
+});
+document.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset.p){const id=t.dataset.p,pos=t.selectionStart;S.prices[id]=t.value;save();render();const n=document.querySelector(`[data-p="${id}"]`);if(n){n.focus();try{n.setSelectionRange(pos,pos)}catch(x){}}return}
+  if(t.id==='struct')S.struct=+t.value;
+  else if(['qty','me','te','rig','ind','adv','slots'].includes(t.id))S[t.id]=Math.max(+t.min,Math.min(+t.max,+t.value||+t.min));
+  else return;
+  save();render();
+});
+render();
+</script>
+</body>
+</html>
